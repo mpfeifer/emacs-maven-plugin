@@ -2,9 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>emacs.helper</groupId>
   <artifactId>emacs-maven-plugin</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.2</version>
   <packaging>maven-plugin</packaging>
-  <name>Sample Parameter-less Maven Plugin</name>
+  <name>Maven Plugin that write emacs .dir-locals.el file for project</name>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>

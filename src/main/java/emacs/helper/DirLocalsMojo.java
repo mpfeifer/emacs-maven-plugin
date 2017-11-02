@@ -22,7 +22,10 @@ import org.apache.maven.project.MavenProject;
  * Write a .dir-locals.el file with some information from MavenProject.
  *
  */
-@Mojo( name = "dirlocals")
+@Mojo( name = "dirlocals",
+       requiresProject = true,
+       requiresDependencyResolution = ResolutionScope.COMPILE
+       )
 public class DirLocalsMojo extends AbstractMojo
 {
     @Parameter( property="projectel.projectFile", defaultValue=".dir-locals.el")
@@ -45,15 +48,16 @@ public class DirLocalsMojo extends AbstractMojo
         classpath.append(classpathVariable);
         classpath.append(" . ( ");
         boolean empty=true;
-        Set<Artifact> elements = mavenProject.getDependencyArtifacts();
-        for (Artifact elem : elements) {
+        try {
+        List<String> elements = mavenProject.getCompileClasspathElements();
+        for (String elem : elements) {
             empty=false;
-            if (elem.getFile() != null) {
-                String absolutePath = elem.getFile().getAbsolutePath();
-                classpath.append(String.format("\"%s\" ", absolutePath));
-            }
+                classpath.append(String.format("\"%s\" ", elem));
         }
         classpath.append("))");
+        } catch (Exception e) {
+            // do nothing
+        }
 
         /* build project-root entry */
         StringBuffer projectRoot = new StringBuffer();
